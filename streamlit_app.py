@@ -1,6 +1,38 @@
 import streamlit as st
+from PIL import Image
 
-st.title("🎈 My new app")
-st.write(
-    "Let's start building! For help and inspiration, head over to [docs.streamlit.io](https://docs.streamlit.io/)."
-)
+# Judul aplikasi
+st.title("Aplikasi Rotasi Gambar")
+
+# Upload gambar
+uploaded_file = st.file_uploader("Unggah gambar Anda", type=["png", "jpg", "jpeg"])
+
+if uploaded_file:
+    # Baca gambar yang diunggah
+    image = Image.open(uploaded_file)
+    
+    # Tampilkan gambar asli
+    st.subheader("Gambar Asli")
+    st.image(image, caption="Gambar yang diunggah", use_column_width=True)
+    
+    # Slider untuk menentukan derajat rotasi
+    angle = st.slider("Pilih derajat rotasi", min_value=0, max_value=360, value=0, step=1)
+    
+    # Rotasi gambar
+    rotated_image = image.rotate(angle, expand=True)
+    
+    # Tampilkan gambar setelah rotasi
+    st.subheader("Gambar Setelah Rotasi")
+    st.image(rotated_image, caption=f"Gambar diputar {angle}°", use_column_width=True)
+    
+    # Tombol untuk mengunduh gambar hasil rotasi
+    img_byte_array = BytesIO()
+    rotated_image.save(img_byte_array, format="PNG")
+    img_byte_array = img_byte_array.getvalue()
+    
+    st.download_button(
+        label="Unduh Gambar Hasil Rotasi",
+        data=img_byte_array,
+        file_name="rotated_image.png",
+        mime="image/png"
+    )
