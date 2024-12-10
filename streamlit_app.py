@@ -25,14 +25,10 @@ if uploaded_file:
     st.subheader("Gambar Setelah Rotasi")
     st.image(rotated_image, caption=f"Gambar diputar {angle}°", use_column_width=True)
     
-    # Tombol untuk mengunduh gambar hasil rotasi
-    img_byte_array = BytesIO()
-    rotated_image.save(img_byte_array, format="PNG")
-    img_byte_array = img_byte_array.getvalue()
-    
+ # Tombol download
     st.download_button(
-        label="Unduh Gambar Hasil Rotasi",
-        data=img_byte_array,
-        file_name="rotated_image.png",
-        mime="image/png"
+        label=f"Download Image as {format_type}",
+        data=img_for_download,
+        file_name=f"edited_image.{format_type.lower()}",
+        mime=f"image/{format_type.lower()}" if format_type != "PDF" else "application/pdf"
     )
